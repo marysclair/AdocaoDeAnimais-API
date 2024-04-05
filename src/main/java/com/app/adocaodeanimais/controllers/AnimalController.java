@@ -4,6 +4,7 @@ import com.app.adocaodeanimais.dto.animal.AnimalRequestPostDTO;
 import com.app.adocaodeanimais.dto.animal.AnimalResponseDTO;
 import com.app.adocaodeanimais.dto.animal.AnimalResponseListDTO;
 import com.app.adocaodeanimais.dto.animal.AnimalUpdateRequestDTO;
+import com.app.adocaodeanimais.exceptions.InternalErrorException;
 import com.app.adocaodeanimais.services.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AnimalController {
             var uri = uriComponentsBuilder.path("/animals/{id}").buildAndExpand(newAnimal.animal().getId()).toUri();
             return ResponseEntity.created(uri).body(newAnimal);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -33,7 +34,7 @@ public class AnimalController {
             AnimalResponseListDTO animals = this.animalService.getAllAnimals();
             return ResponseEntity.ok(animals);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -43,7 +44,7 @@ public class AnimalController {
             AnimalResponseDTO animal = this.animalService.getAnimalById(animalId);
             return ResponseEntity.ok(animal);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -53,7 +54,7 @@ public class AnimalController {
             AnimalResponseDTO animal = this.animalService.deleteAnimalById(animalId);
             return ResponseEntity.ok(animal);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -63,7 +64,7 @@ public class AnimalController {
             AnimalResponseDTO animalUpdated = this.animalService.updateAnimalById(animalId, animal);
             return ResponseEntity.ok(animalUpdated);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e.getMessage());
         }
     }
 }

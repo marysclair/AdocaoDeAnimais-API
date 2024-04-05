@@ -1,5 +1,6 @@
 package com.app.adocaodeanimais.controllers;
 
+import com.app.adocaodeanimais.domain.adoption.Adoption;
 import com.app.adocaodeanimais.dto.adoption.AdoptionListResponseDTO;
 import com.app.adocaodeanimais.dto.adoption.AdoptionRequestPostDTO;
 import com.app.adocaodeanimais.dto.adoption.AdoptionResponseDTO;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/adoptions")
@@ -90,10 +93,10 @@ public class AdoptionController {
         }
     }
 
-    @DeleteMapping("/animalGuardian/${animalGuardianId}")
+    @DeleteMapping("/animalGuardian/{animalGuardianId}")
     public ResponseEntity<AdoptionListResponseDTO> deleteAdoptionsByAnimalGuardianId(@PathVariable String animalGuardianId){
         try {
-            AdoptionListResponseDTO adoptions = this.adoptionService.deleteAdoptionsByAnimalGuardianId(animalGuardianId);
+            AdoptionListResponseDTO adoptions = this.adoptionService.deleteAdoptionByAnimalGuardianId(animalGuardianId);
             return ResponseEntity.ok(adoptions);
         } catch (Exception e) {
             throw new InternalErrorException(e.getMessage());
@@ -101,7 +104,7 @@ public class AdoptionController {
     }
 
     @DeleteMapping("/animal/{animalId}")
-    public ResponseEntity<AdoptionListResponseDTO> deleteAdoptionByAnimalId(@PathVariable String animalId){
+    public ResponseEntity<AdoptionListResponseDTO> deleteAdoptionsByAnimalId(@PathVariable String animalId){
         try {
             AdoptionListResponseDTO adoptions = this.adoptionService.deleteAdoptionByAnimalId(animalId);
             return ResponseEntity.ok(adoptions);

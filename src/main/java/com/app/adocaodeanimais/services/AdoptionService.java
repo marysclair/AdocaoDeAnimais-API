@@ -15,6 +15,7 @@ import com.app.adocaodeanimais.exceptions.NotFoundException;
 import com.app.adocaodeanimais.repositories.AdoptionRepository;
 import com.app.adocaodeanimais.repositories.AnimalGuardianRepository;
 import com.app.adocaodeanimais.repositories.AnimalRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -77,13 +78,17 @@ public class AdoptionService {
         return new AnimalGuardianListResponseDTO(animalGuardians);
     }
 
-    public AdoptionListResponseDTO deleteAdoptionsByAnimalGuardianId(String animalGuardianId){
-        List<Adoption> adoptions = this.adoptionRepository.deleteAdoptionsByAnimalGuardianId(animalGuardianId);
+    @Transactional
+    public AdoptionListResponseDTO deleteAdoptionByAnimalGuardianId(String animalGuardianId){
+        AnimalGuardianResponseDTO animalGuardian = this.animalGuardianService.getAnimalGuardianById(animalGuardianId);
+        List<Adoption> adoptions = this.adoptionRepository.deleteByAnimalGuardian(animalGuardian.animalGuardian());
         return new AdoptionListResponseDTO(adoptions);
     }
 
+    @Transactional
     public AdoptionListResponseDTO deleteAdoptionByAnimalId(String animalId){
-        List<Adoption> adoptions = this.adoptionRepository.deleteAdoptionByAnimalId(animalId);
+        AnimalResponseDTO animal = this.animalService.getAnimalById(animalId);
+        List<Adoption> adoptions =this.adoptionRepository.deleteByAnimal(animal.animal());
         return new AdoptionListResponseDTO(adoptions);
     }
 
