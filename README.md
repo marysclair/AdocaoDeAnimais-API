@@ -34,7 +34,7 @@ utilizando JPA, Hibernate e PostgreSQL. Essa API tem o propósito de lidar com a
 
 ## Execução do projeto
 
-1. Clone o projeto atráves do git clone `git clone` ou baixe em formato zip para descompactar. 
+1. Clone o projeto atráves do git clone `git clone https://github.com/marysclair/AdocaoDeAnimais-API.git` ou baixe em formato zip para descompactar. 
 2. Crie o banco de dados no PostgreSQL e altere a URL de conexão do banco de dados com o nome do banco criado no arquivo application.properties. Adicione as suas informações privadas (nome do usuário e senha do Postgre).  
 3. Inicie o projeto. Você pode consumir a API através de outro Frontend ou por interfaces como Insomnia.
 
