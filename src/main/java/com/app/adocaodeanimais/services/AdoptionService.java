@@ -20,7 +20,7 @@ import java.util.List;
 public class AdoptionService {
     private final AdoptionRepository adoptionRepository;
 
-    public AdoptionResponseDTO CreateAdoption(AdoptionRequestPostDTO adoption) {
+    public AdoptionResponseDTO createAdoption(AdoptionRequestPostDTO adoption) {
         Adoption newAdoption = new Adoption();
         newAdoption.setAnimal(adoption.animal());
         newAdoption.setAnimalGuardian(adoption.animalGuardian());
@@ -32,38 +32,38 @@ public class AdoptionService {
         return new AdoptionResponseDTO(newAdoption);
     }
 
-    public AdoptionListResponseDTO GetAllAdoptions() {
+    public AdoptionListResponseDTO getAllAdoptions() {
         List<Adoption> adoptions = this.adoptionRepository.findAll();
         return new AdoptionListResponseDTO(adoptions);
     }
 
-    public AdoptionResponseDTO GetAdoptionById(String adoptionId) {
+    public AdoptionResponseDTO getAdoptionById(String adoptionId) {
         Adoption adoption = this.adoptionRepository.findById(adoptionId).orElseThrow(() ->
                 new RuntimeException("adoption not found"));
         return new AdoptionResponseDTO(adoption);
     }
 
-    public AdoptionResponseDTO DeleteAdoptionById(String adoptionId) {
+    public AdoptionResponseDTO deleteAdoptionById(String adoptionId) {
         Adoption adoption = this.adoptionRepository.findById(adoptionId).orElseThrow(() ->
                 new RuntimeException("adoption not found"));
         this.adoptionRepository.deleteById(adoptionId);
         return new AdoptionResponseDTO(adoption);
     }
 
-    public AdoptionResponseDTO UpdateAdoptionById(String adoptionId, AdoptionUpdateRequestDTO adoption) {
+    public AdoptionResponseDTO updateAdoptionById(String adoptionId, AdoptionUpdateRequestDTO adoption) {
         Adoption adoptionUpdated = this.adoptionRepository.findById(adoptionId).orElseThrow(() ->
                 new RuntimeException("adoption not found"));
         adoptionUpdated.setReason(adoption.reason());
         return new AdoptionResponseDTO(adoptionUpdated);
     }
 
-    public AnimalResponseListDTO GetAnimalsAdoptedByAnimalGuardianId(String animalGuardianId){
+    public AnimalResponseListDTO getAnimalsAdoptedByAnimalGuardianId(String animalGuardianId){
         List<Adoption> adoptions = this.adoptionRepository.getAdoptionByAnimalGuardianId(animalGuardianId);
         List<Animal> animals = adoptions.stream().map(Adoption::getAnimal).toList();
         return new AnimalResponseListDTO(animals);
     }
 
-    public AnimalGuardianListResponseDTO GetAnimalGuardiansByAnimalId(String animalId){
+    public AnimalGuardianListResponseDTO getAnimalGuardiansByAnimalId(String animalId){
         List<Adoption> adoptions = this.adoptionRepository.getAdoptionByAnimalId(animalId);
         List<AnimalGuardian> animalGuardians = adoptions.stream().map(Adoption::getAnimalGuardian).toList();
         return new AnimalGuardianListResponseDTO(animalGuardians);

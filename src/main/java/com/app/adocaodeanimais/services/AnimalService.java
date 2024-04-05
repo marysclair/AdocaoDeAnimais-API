@@ -14,7 +14,7 @@ import java.util.List;
 public class AnimalService {
     private final AnimalRepository animalRepository;
 
-    public AnimalResponseDTO CreateAnimal(AnimalRequestPostDTO animal){
+    public AnimalResponseDTO createAnimal(AnimalRequestPostDTO animal){
         Animal newAnimal = new Animal();
         newAnimal.setName(animal.name());
         newAnimal.setDateOfBirth(animal.dateOfBirth());
@@ -27,25 +27,25 @@ public class AnimalService {
         return new AnimalResponseDTO(newAnimal);
     }
 
-    public AnimalResponseListDTO GetAllAnimals(){
+    public AnimalResponseListDTO getAllAnimals(){
         List<Animal> animals = this.animalRepository.findAll();
         return new AnimalResponseListDTO(animals);
     }
 
-    public AnimalResponseDTO GetAnimalById(String animalId){
+    public AnimalResponseDTO getAnimalById(String animalId){
         Animal animal = this.animalRepository.findById(animalId).orElseThrow(() ->
                 new NotFoundException("animal not found"));
         return new AnimalResponseDTO(animal);
     }
 
-    public AnimalResponseDTO DeleteAnimalById(String animalId){
+    public AnimalResponseDTO deleteAnimalById(String animalId){
         Animal animal = this.animalRepository.findById(animalId).orElseThrow(() ->
                 new NotFoundException("animal not found"));
         this.animalRepository.deleteById(animalId);
         return new AnimalResponseDTO(animal);
     }
 
-    public AnimalResponseDTO UpdateAnimalById(String animalId, AnimalUpdateRequestDTO animal){
+    public AnimalResponseDTO updateAnimalById(String animalId, AnimalUpdateRequestDTO animal){
         Animal animalUpdated = this.animalRepository.findById(animalId).orElseThrow(() ->
                 new NotFoundException("animal not found"));
         animalUpdated.setName(animal.name());

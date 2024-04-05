@@ -5,6 +5,7 @@ import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianListResponseDTO;
 import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianRequestPostDTO;
 import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianResponseDTO;
 import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianUpdateRequestDTO;
+import com.app.adocaodeanimais.exceptions.NotFoundException;
 import com.app.adocaodeanimais.repositories.AnimalGuardianRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,39 +17,44 @@ import java.util.List;
 public class AnimalGuardianService {
     private final AnimalGuardianRepository animalGuardianRepository;
 
-    public AnimalGuardianResponseDTO CreateAnimalGuardian(AnimalGuardianRequestPostDTO animalGuardian) {
+    public AnimalGuardianResponseDTO createAnimalGuardian(AnimalGuardianRequestPostDTO animalGuardian) {
         AnimalGuardian newAnimalGuardian = new AnimalGuardian();
         newAnimalGuardian.setName(animalGuardian.name());
         newAnimalGuardian.setAddress(animalGuardian.address());
-        newAnimalGuardian.setPhoneNumber(animalGuardian.phoneNumber());
-        newAnimalGuardian.setCpf(animalGuardian.cpf());
+        newAnimalGuardian.setPhoneNumber("(" + animalGuardian.phoneNumber().substring(0, 2) + ") " +
+                animalGuardian.phoneNumber().substring(2, 7) + "-" +
+                animalGuardian.phoneNumber().substring(7));
+        newAnimalGuardian.setCpf(animalGuardian.cpf().substring(0, 3) + "." +
+                animalGuardian.cpf().substring(3, 6) + "." +
+                animalGuardian.cpf().substring(6, 9) + "-" +
+                animalGuardian.cpf().substring(9));
 
         this.animalGuardianRepository.save(newAnimalGuardian);
 
         return new AnimalGuardianResponseDTO(newAnimalGuardian);
     }
 
-    public AnimalGuardianListResponseDTO GetAllAnimalGuardians() {
+    public AnimalGuardianListResponseDTO getAllAnimalGuardians() {
         List<AnimalGuardian> animalGuardians = this.animalGuardianRepository.findAll();
         return new AnimalGuardianListResponseDTO(animalGuardians);
     }
 
-    public AnimalGuardianResponseDTO GetAnimalGuardianById(String animalGuardianId) {
+    public AnimalGuardianResponseDTO getAnimalGuardianById(String animalGuardianId) {
         AnimalGuardian animalGuardian = this.animalGuardianRepository.findById(animalGuardianId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal guardian not found by id: " + animalGuardianId));
         return new AnimalGuardianResponseDTO(animalGuardian);
     }
 
-    public AnimalGuardianResponseDTO DeleteAnimalGuardianById(String animalGuardianId) {
+    public AnimalGuardianResponseDTO deleteAnimalGuardianById(String animalGuardianId) {
         AnimalGuardian animalGuardian = this.animalGuardianRepository.findById(animalGuardianId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal guardian not found by id: " + animalGuardianId));
         this.animalGuardianRepository.deleteById(animalGuardianId);
         return new AnimalGuardianResponseDTO(animalGuardian);
     }
 
-    public AnimalGuardianResponseDTO UpdateAnimalGuardianById(String animalGuardianId, AnimalGuardianUpdateRequestDTO animalGuardian) {
+    public AnimalGuardianResponseDTO updateAnimalGuardianById(String animalGuardianId, AnimalGuardianUpdateRequestDTO animalGuardian) {
         AnimalGuardian animalGuardianUpdated = this.animalGuardianRepository.findById(animalGuardianId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal guardian not found by id: " + animalGuardianId));
         animalGuardianUpdated.setName(animalGuardian.name());
         animalGuardianUpdated.setPhoneNumber(animalGuardian.phoneNumber());
         animalGuardianUpdated.setAddress(animalGuardian.address());
