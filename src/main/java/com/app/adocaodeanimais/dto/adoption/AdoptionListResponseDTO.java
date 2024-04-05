@@ -4,5 +4,5 @@ import com.app.adocaodeanimais.domain.adoption.Adoption;
 
 import java.util.List;
 
-public record AdoptionListResponseDTO(List<Adoption> adotions) {
+public record AdoptionListResponseDTO(List<Adoption> adoptions) {
 }

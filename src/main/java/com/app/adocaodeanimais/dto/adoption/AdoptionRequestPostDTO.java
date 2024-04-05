@@ -5,5 +5,6 @@ import com.app.adocaodeanimais.domain.animalGuardian.AnimalGuardian;
 
 import java.time.LocalDateTime;
 
-public record AdoptionRequestPostDTO(String id, Animal animal, AnimalGuardian animalGuardian, LocalDateTime date, String reason) {
+public record AdoptionRequestPostDTO(String animalId,
+            String animalGuardianId, String reason) {
 }

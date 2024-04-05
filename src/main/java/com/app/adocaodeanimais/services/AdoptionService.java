@@ -7,9 +7,14 @@ import com.app.adocaodeanimais.dto.adoption.AdoptionListResponseDTO;
 import com.app.adocaodeanimais.dto.adoption.AdoptionRequestPostDTO;
 import com.app.adocaodeanimais.dto.adoption.AdoptionResponseDTO;
 import com.app.adocaodeanimais.dto.adoption.AdoptionUpdateRequestDTO;
+import com.app.adocaodeanimais.dto.animal.AnimalResponseDTO;
 import com.app.adocaodeanimais.dto.animal.AnimalResponseListDTO;
 import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianListResponseDTO;
+import com.app.adocaodeanimais.dto.animalGuardian.AnimalGuardianResponseDTO;
+import com.app.adocaodeanimais.exceptions.NotFoundException;
 import com.app.adocaodeanimais.repositories.AdoptionRepository;
+import com.app.adocaodeanimais.repositories.AnimalGuardianRepository;
+import com.app.adocaodeanimais.repositories.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +24,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionService {
     private final AdoptionRepository adoptionRepository;
+    private final AnimalService animalService;
+    private final AnimalGuardianService animalGuardianService;
 
     public AdoptionResponseDTO createAdoption(AdoptionRequestPostDTO adoption) {
         Adoption newAdoption = new Adoption();
-        newAdoption.setAnimal(adoption.animal());
-        newAdoption.setAnimalGuardian(adoption.animalGuardian());
-        newAdoption.setDate(adoption.date());
+        AnimalResponseDTO animal = this.animalService.getAnimalById(adoption.animalId());
+        newAdoption.setAnimal(animal.animal());
+        AnimalGuardianResponseDTO animalGuardian = this.animalGuardianService.getAnimalGuardianById(adoption.animalGuardianId());
+        newAdoption.setAnimalGuardian(animalGuardian.animalGuardian());
         newAdoption.setReason(adoption.reason());
 
         this.adoptionRepository.save(newAdoption);
@@ -67,6 +75,16 @@ public class AdoptionService {
         List<Adoption> adoptions = this.adoptionRepository.getAdoptionByAnimalId(animalId);
         List<AnimalGuardian> animalGuardians = adoptions.stream().map(Adoption::getAnimalGuardian).toList();
         return new AnimalGuardianListResponseDTO(animalGuardians);
+    }
+
+    public AdoptionListResponseDTO deleteAdoptionsByAnimalGuardianId(String animalGuardianId){
+        List<Adoption> adoptions = this.adoptionRepository.deleteAdoptionsByAnimalGuardianId(animalGuardianId);
+        return new AdoptionListResponseDTO(adoptions);
+    }
+
+    public AdoptionListResponseDTO deleteAdoptionByAnimalId(String animalId){
+        List<Adoption> adoptions = this.adoptionRepository.deleteAdoptionByAnimalId(animalId);
+        return new AdoptionListResponseDTO(adoptions);
     }
 
 }
