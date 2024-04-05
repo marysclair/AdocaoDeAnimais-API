@@ -2,6 +2,7 @@ package com.app.adocaodeanimais.services;
 
 import com.app.adocaodeanimais.domain.animal.Animal;
 import com.app.adocaodeanimais.dto.animal.*;
+import com.app.adocaodeanimais.exceptions.NotFoundException;
 import com.app.adocaodeanimais.repositories.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class AnimalService {
         newAnimal.setPersonality(animal.personality());
         newAnimal.setSpecies(animal.species());
         newAnimal.setBreed(animal.breed());
-
+        System.out.println(newAnimal);
         this.animalRepository.save(newAnimal);
 
         return new AnimalResponseDTO(newAnimal);
@@ -33,20 +34,20 @@ public class AnimalService {
 
     public AnimalResponseDTO GetAnimalById(String animalId){
         Animal animal = this.animalRepository.findById(animalId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal not found"));
         return new AnimalResponseDTO(animal);
     }
 
     public AnimalResponseDTO DeleteAnimalById(String animalId){
         Animal animal = this.animalRepository.findById(animalId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal not found"));
         this.animalRepository.deleteById(animalId);
         return new AnimalResponseDTO(animal);
     }
 
     public AnimalResponseDTO UpdateAnimalById(String animalId, AnimalUpdateRequestDTO animal){
         Animal animalUpdated = this.animalRepository.findById(animalId).orElseThrow(() ->
-                new RuntimeException("animal not found"));
+                new NotFoundException("animal not found"));
         animalUpdated.setName(animal.name());
         animalUpdated.setDateOfBirth(animal.dateOfBirth());
         return new AnimalResponseDTO(animalUpdated);
