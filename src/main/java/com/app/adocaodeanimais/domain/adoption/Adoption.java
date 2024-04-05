@@ -1,4 +1,4 @@
-package com.app.adocaodeanimais.domain.adotion;
+package com.app.adocaodeanimais.domain.adoption;
 
 import com.app.adocaodeanimais.domain.animal.Animal;
 import com.app.adocaodeanimais.domain.animalGuardian.AnimalGuardian;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Adotion {
+public class Adoption {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
