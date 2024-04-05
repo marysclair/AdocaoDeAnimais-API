@@ -4,6 +4,9 @@
 Esse projeto foi desenvolvido com o intuito de praticar Spring Boot, 
 utilizando JPA, Hibernate e PostgreSQL. Essa API tem o propósito de lidar com adoções de animais, sendo possível manter um histórico de todos os animais disponíveis para adoção e todas as adoções realizadas. O frontend desse projeto será desenvolvido em breve.
 
+## Diagrama relacional
+![Diagrama relacional](diagramaRelacional.png)
+
 ## Levantamento de requisitos
 
 * Manter tutor
